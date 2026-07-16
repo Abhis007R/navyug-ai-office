@@ -1,0 +1,6 @@
+{
+  "name": "Navyug AI Office",
+  "description": "A 24/7 AI-powered administrative workforce for Navyug Jan Kalyan Foundation, utilizing 10 specialized Gemini AI agents.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
