@@ -1,8 +1,8 @@
-import SearchBar from "../../components/kuber/SearchBar";
-import StatsCards from "../../components/kuber/StatsCards";
-import RecentLeads from "../../components/kuber/RecentLeads";
-import ResearchQueue from "../../components/kuber/ResearchQueue";
-import LeadTable from "../../components/kuber/LeadTable";
+import SearchBar from "../../components/Kuber/SearchBar";
+import StatsCards from "../../components/Kuber/StatsCards";
+import RecentLeads from "../../components/Kuber/Recentleads";
+import ResearchQueue from "../../components/Kuber/Researchqueue";
+import LeadTable from "../../components/Kuber/Leadtable";
 
 export default function KuberDashboard() {
   return (
