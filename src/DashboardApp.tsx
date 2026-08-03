@@ -34,9 +34,12 @@ export default function App() {
   const [workforcePreselect, setWorkforcePreselect] = useState<{ agentId: string; task: string } | null>(null);
 
   // Fetch CRM database from Express server
+  const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://navyug-ai-office.onrender.com";
   const fetchCrmData = async () => {
     try {
-      const response = await fetch("/api/crm");
+      const response = await fetch(`${API_BASE}/api/crm`);
       if (!response.ok) {
         throw new Error("Failed to contact the backend server.");
       }
@@ -56,7 +59,7 @@ export default function App() {
       // Run a simple lightweight probe query or check status.
       // We can also just handle it reactively if any route fails with "GEMINI_API_KEY is not configured."
       // Let's do a lightweight probe
-      const res = await fetch("/api/agent/run", {
+      const res = await fetch(`${API_BASE}/api/agent/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ agentId: "CHATBOT", task: "Ping" }),
@@ -106,7 +109,7 @@ export default function App() {
         }
       } else {
         // Fallback for general tables
-        const response = await fetch("/api/crm/update", {
+        const response = await fetch(`${API_BASE}/api/crm/update`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ table, action, item }),

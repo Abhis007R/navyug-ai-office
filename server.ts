@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
@@ -7,9 +8,19 @@ import { gemini } from "./src/backend/lib/gemini";
 dotenv.config();
 
 const app = express();
+app.use(
+  cors({
+    origin: [
+      "https://navyug-ai-office.netlify.app",
+    ],
+    credentials: true,
+  })
+);
+
+app.use(express.json());
 app.use(express.json());
 
-const PORT = 4000;
+const PORT = Number(process.env.PORT) || 4000;
 
 // Lazy initialization of Gemini API Client
 let aiInstance: GoogleGenAI | null = null;
@@ -450,8 +461,8 @@ async function bootstrap() {
   console.log("STEP 4");
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Navyug AI Office Server running on http://localhost:${PORT}`);
-  });
+  console.log(`Navyug AI Office Server running on port ${PORT}`);
+});
 
   console.log("STEP 5");
 }
