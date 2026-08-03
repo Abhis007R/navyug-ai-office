@@ -134,7 +134,7 @@ interface AiWorkforceProps {
 
 export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceProps) {
   const [selectedAgent, setSelectedAgent] = useState<AgentProfile>(AGENT_PROFILES[0]);
-  const [taskInput, setTaskInput] = useState<string>(selectedAgent.exampleTasks[0]);
+  const [taskInput, setTaskInput] = useState<string>(selectedAgent?.exampleTasks?.[0] ?? "");
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [apiResult, setApiResult] = useState<string>("");
   const [syncStatus, setSyncStatus] = useState<string>("");
@@ -150,7 +150,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
 
   const handleAgentSelect = (agent: AgentProfile) => {
     setSelectedAgent(agent);
-    setTaskInput(agent.exampleTasks[0]);
+    setTaskInput(agent.exampleTasks?.[0] ?? "");
     setApiResult("");
     setSyncStatus("");
     setErrorMsg("");
@@ -174,7 +174,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
       
       // Update status to running
       setBulkStatus(prev => ({ ...prev, [agent.id]: 'running' }));
-      setBulkLog(prev => [...prev, `[${agent.name}] Launching directive: "${agent.exampleTasks[0]}"`]);
+      setBulkLog(prev => [...prev, `[${agent.name}] Launching directive: "${agent.exampleTasks?.[0] ?? ""}"`]);
       
       try {
         const response = await fetch("/api/agent/run", {
@@ -182,7 +182,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             agentId: agent.id,
-            task: agent.exampleTasks[0],
+            task: agent.exampleTasks?.[0] ?? "",
             context: database,
           }),
         });
@@ -202,7 +202,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
           switch (agent.id) {
             case "KUBER":
               table = "donors";
-              const isIndividual = resText.toLowerCase().includes("individual") || resText.toLowerCase().includes("hni") || resText.toLowerCase().includes("philanthropist") || agent.exampleTasks[0].toLowerCase().includes("individual") || agent.exampleTasks[0].toLowerCase().includes("hni");
+              const isIndividual = resText.toLowerCase().includes("individual") || resText.toLowerCase().includes("hni") || resText.toLowerCase().includes("philanthropist") || (agent.exampleTasks?.[0] ?? "").toLowerCase().includes("individual") || (agent.exampleTasks?.[0] ?? "").toLowerCase().includes("hni");
               const corporateNameMatch = resText.match(/(?:Corporate|Donor|Target|Company|Name|Trust|Individual|Philanthropist):\s*\**([^\n\*]+)\**/i) || resText.match(/###\s*(.*)/);
               const discoveredName = corporateNameMatch ? corporateNameMatch[1].trim() : (isIndividual ? "Shiv Nadar (HNI Philanthropist)" : "New Discovered Corporate Lead");
               item = {
@@ -228,7 +228,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
                 subject: "CSR Partnership Query - Digital Classrooms",
                 date: new Date().toISOString(),
                 status: "Drafted",
-                content: database.emails[0]?.content || "Inbound message content.",
+                content: database.emails?.[0]?.content ?? "Inbound message content.",
                 draftContent: resText,
               };
               action = "edit";
@@ -305,7 +305,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
               item = {
                 name: "Interested Website Visitor",
                 phone: "+91 99999 00000",
-                message: agent.exampleTasks[0],
+                message: agent.exampleTasks?.[0] ?? "",
                 date: new Date().toISOString(),
                 chatbotResponse: resText,
               };
@@ -430,7 +430,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
             subject: "CSR Partnership Query - Digital Classrooms",
             date: new Date().toISOString(),
             status: "Drafted",
-            content: database.emails[0]?.content || "Inbound message content.",
+            content: database.emails?.[0]?.content ?? "Inbound message content.",
             draftContent: apiResult,
           };
           action = "edit"; // Overwrite to add draft

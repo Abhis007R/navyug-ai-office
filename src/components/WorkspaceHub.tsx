@@ -51,7 +51,7 @@ export default function WorkspaceHub({ database, onUpdateDatabase, onTriggerAgen
   const [editingDonor, setEditingDonor] = useState<Donor | null>(null);
 
   // Selected Email in Gmail Inbox
-  const [selectedEmail, setSelectedEmail] = useState<Email | null>(database.emails[0] || null);
+  const [selectedEmail, setSelectedEmail] =useState(database.emails?.[0] ?? null);
 
   // Format currency
   const formatINR = (value: number) => {
