@@ -2,15 +2,14 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
-import { GoogleGenAI } from "@google/genai";
-import { supabase } from "./src/lib/supabase";
-
+import { supabase } from "./src/backend/supabase";
+import { gemini } from "./src/backend/lib/gemini";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-const PORT = 3000;
+const PORT = 4000;
 
 // Lazy initialization of Gemini API Client
 let aiInstance: GoogleGenAI | null = null;
@@ -126,43 +125,58 @@ export class VolunteerRepository {
 // Fetch all database records from Supabase
 async function fetchCrmDatabase() {
   const [
+    activityLogs,
+    bankAccounts,
+    communications,
+    complianceStatus,
+    donorLeads,
     donors,
+    employees,
+    fundingStrategies,
+    grantProposals,
+    notifications,
+    organizationDocuments,
+    organizationProfile,
     students,
-    volunteers,
-    finances,
-    emails,
-    websiteQueries,
-    legalCompliance,
-    driveFiles,
-    taskList,
-    donations,
-    activityLogs
+    tasks,
+    userProfiles,
+    volunteers
   ] = await Promise.all([
-    DonorRepository.getAll(),
-    StudentRepository.getAll(),
-    VolunteerRepository.getAll(),
-    safeSelect("finances"),
-    safeSelect("emails"),
-    safeSelect("website_queries", "websiteQueries"),
-    safeSelect("legal_compliance", "legalCompliance"),
-    safeSelect("drive_files", "driveFiles"),
-    safeSelect("task_list", "taskList"),
-    safeSelect("donations"),
-    safeSelect("activity_logs", "activityLogs")
+    safeSelect("activitylogs"),
+    safeSelect("bank_accounts"),
+    safeSelect("communications"),
+    safeSelect("compliance_status"),
+    safeSelect("donor_leads"),
+    safeSelect("donors"),
+    safeSelect("employees"),
+    safeSelect("funding_strategies"),
+    safeSelect("grant_proposals"),
+    safeSelect("notifications"),
+    safeSelect("organization_documents"),
+    safeSelect("organization_profile"),
+    safeSelect("students"),
+    safeSelect("tasks"),
+    safeSelect("user_profiles"),
+    safeSelect("volunteers")
   ]);
 
   return {
+    activityLogs,
+    bankAccounts,
+    communications,
+    complianceStatus,
+    donorLeads,
     donors,
+    employees,
+    fundingStrategies,
+    grantProposals,
+    notifications,
+    organizationDocuments,
+    organizationProfile,
     students,
-    volunteers,
-    finances,
-    emails,
-    websiteQueries,
-    legalCompliance,
-    driveFiles,
-    taskList,
-    donations,
-    activityLogs
+    tasks,
+    userProfiles,
+    volunteers
   };
 }
 
@@ -385,7 +399,7 @@ app.post("/api/agent/run", async (req, res) => {
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+       model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         systemInstruction: systemInstruction,
@@ -408,14 +422,24 @@ app.post("/api/agent/run", async (req, res) => {
 });
 
 // Serve frontend assets and start server
+
 async function bootstrap() {
+  console.log("STEP 1");
+
   if (process.env.NODE_ENV !== "production") {
+    console.log("STEP 2");
+
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
+
+    console.log("STEP 3");
+
     app.use(vite.middlewares);
   } else {
+    console.log("STEP PROD");
+
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
@@ -423,10 +447,13 @@ async function bootstrap() {
     });
   }
 
+  console.log("STEP 4");
+
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Navyug AI Office Server running on http://localhost:${PORT}`);
   });
+
+  console.log("STEP 5");
 }
 
 bootstrap();
-

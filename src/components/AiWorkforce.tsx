@@ -792,7 +792,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
               </span>
             </div>
             <span className="text-[10px] bg-slate-200 text-slate-600 font-bold px-1.5 py-0.2 rounded uppercase">
-              Isolated Role
+              Connected to AI Orchestrator
             </span>
           </div>
 
