@@ -273,8 +273,8 @@ export default function CeoBriefing({ database, onUpdateDatabase, onTriggerAgent
 
           {/* Task Render */}
           <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
-            {database.taskList.length > 0 ? (
-              database.taskList.map((task) => (
+            {(database.taskList ?? []).length > 0 ? (
+              (database.taskList ?? []).map((task) => (
                 <div
                   key={task.id}
                   className={`p-3.5 rounded-xl border transition-all flex items-start gap-3 ${

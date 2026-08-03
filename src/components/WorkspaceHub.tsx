@@ -527,7 +527,7 @@ export default function WorkspaceHub({ database, onUpdateDatabase, onTriggerAgen
             })()}
 
             {activeSheet === "students" && (
-              database.students.length === 0 ? (
+              (database.students ?? []).length === 0 ? (
                 <div className="p-8 text-center text-slate-500 font-bold bg-slate-50/50 text-xs">No data available.</div>
               ) : (
                 <table className="w-full text-left text-xs">
@@ -571,7 +571,7 @@ export default function WorkspaceHub({ database, onUpdateDatabase, onTriggerAgen
             )}
 
             {activeSheet === "volunteers" && (
-              database.volunteers.length === 0 ? (
+              (database.volunteers ?? []).length === 0 ? (
                 <div className="p-8 text-center text-slate-500 font-bold bg-slate-50/50 text-xs">No data available.</div>
               ) : (
                 <table className="w-full text-left text-xs">
@@ -614,7 +614,7 @@ export default function WorkspaceHub({ database, onUpdateDatabase, onTriggerAgen
             )}
 
             {activeSheet === "finances" && (
-              database.finances.length === 0 ? (
+              (database.finances ?? []).length === 0 ? (
                 <div className="p-8 text-center text-slate-500 font-bold bg-slate-50/50 text-xs">No data available.</div>
               ) : (
                 <table className="w-full text-left text-xs">
@@ -673,7 +673,7 @@ export default function WorkspaceHub({ database, onUpdateDatabase, onTriggerAgen
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[500px]">
             {/* Email List Left Panel (4 cols) */}
             <div className="lg:col-span-4 border border-slate-200 rounded-xl overflow-y-auto divide-y divide-slate-200 bg-slate-50/10">
-              {database.emails.length === 0 ? (
+              {(database.emails ?? []).length === 0 ? (
                 <div className="p-8 text-center text-slate-500 font-bold text-xs">No data available.</div>
               ) : (
                 database.emails.map((e) => (
@@ -899,7 +899,7 @@ export default function WorkspaceHub({ database, onUpdateDatabase, onTriggerAgen
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {database.legalCompliance.length === 0 ? (
+            {(database.legalCompliance ?? []).length === 0 ? (
               <div className="col-span-2 p-8 text-center text-slate-500 font-bold bg-slate-50 border border-slate-200 rounded-xl text-xs">
                 No data available.
               </div>

@@ -102,7 +102,7 @@ export default function Dashboard({ data, onNavigate }: DashboardProps) {
       });
     }
 
-    if (data.driveFiles && data.driveFiles.length > 0) {
+    if (data.driveFiles && (data.driveFiles ?? []).length > 0) {
       data.driveFiles.slice(-2).forEach((file) => {
         aiActivityLog.push({
           agent: file.createdBy.includes("GRANT") ? "GRANT" : file.createdBy.includes("MEDIA") ? "MEDIA" : "CEO_ASSISTANT",
@@ -114,7 +114,7 @@ export default function Dashboard({ data, onNavigate }: DashboardProps) {
       });
     }
 
-    if (data.taskList && data.taskList.length > 0) {
+    if (data.taskList && (data.taskList ?? []).length > 0) {
       data.taskList.slice(-2).forEach((t) => {
         aiActivityLog.push({
           agent: "HR",
@@ -183,7 +183,7 @@ export default function Dashboard({ data, onNavigate }: DashboardProps) {
           <div className="space-y-3">
             <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider text-[11px]">Student Count</span>
             <div className="text-2xl font-bold text-slate-900">
-              {data.students?.length === 0 || !data.students ? "0 Students" : `${data.students.length} Students`}
+              {(data.students ?? []).length === 0 || !data.students ? "0 Students" : `${(data.students ?? []).length} Students`}
             </div>
             <div className="flex items-center gap-1 text-xs text-slate-400">
               <span className="rounded-full bg-indigo-50 border border-indigo-100 px-2 py-0.5 font-bold text-indigo-700">
@@ -201,7 +201,7 @@ export default function Dashboard({ data, onNavigate }: DashboardProps) {
           <div className="space-y-3">
             <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider text-[11px]">Volunteer Count</span>
             <div className="text-2xl font-bold text-slate-900">
-              {data.volunteers?.length === 0 || !data.volunteers ? "0 Volunteers" : `${data.volunteers.length} Volunteers`}
+              {(data.volunteers ?? []).length === 0 || !data.volunteers ? "0 Volunteers" : `${(data.volunteers ?? []).length} Volunteers`}
             </div>
             <div className="flex items-center gap-1 text-xs text-slate-400">
               <span className="rounded-full bg-blue-50 border border-blue-100 px-2 py-0.5 font-bold text-blue-700">
@@ -219,7 +219,7 @@ export default function Dashboard({ data, onNavigate }: DashboardProps) {
           <div className="space-y-3">
             <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider text-[11px]">Donor Count</span>
             <div className="text-2xl font-bold text-slate-900">
-              {data.donors?.length === 0 || !data.donors ? "0 Donors" : `${data.donors.length} Donors`}
+              {(data.donors ?? []).length === 0 || !data.donors ? "0 Donors" : `${(data.donors ?? []).length} Donors`}
             </div>
             <div className="flex items-center gap-1 text-xs text-slate-400">
               <span className="rounded-full bg-amber-50 border border-amber-100 px-2 py-0.5 font-bold text-amber-700">
