@@ -4,7 +4,7 @@ import Login from "./auth/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 import DashboardApp from "./DashboardApp";
-import KuberDashboard from "./pages/kuber/KuberDashboard";
+import KuberDashboard from "./pages/Kuber/KuberDashboard";
 
 export default function App() {
   return (
