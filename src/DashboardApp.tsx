@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { CrmDatabase } from "./types";
 import { DonorRepository, StudentRepository, VolunteerRepository } from "./lib/repositories";
+import { AutomationEngine } from "./automation";
 import Dashboard from "./components/Dashboard";
 import AiWorkforce from "./components/AiWorkforce";
 import WorkspaceHub from "./components/WorkspaceHub";
@@ -99,29 +100,90 @@ const handleUpdateDatabase = async (
 ) => {
   try {
     if (table === "donors") {
-      if (action === "add") {
-        await DonorRepository.create(item);
-      } else if (action === "edit") {
-        await DonorRepository.update(item);
-      } else if (action === "delete") {
-        await DonorRepository.delete(item.id);
-      }
+
+  if (action === "add") {
+
+    const donor = await DonorRepository.create(item);
+
+    await AutomationEngine.trigger(
+      "DONOR_CREATED",
+      donor
+    );
+
+  } else if (action === "edit") {
+
+    await DonorRepository.update(item);
+
+  } else if (action === "delete") {
+
+    await DonorRepository.delete(item.id);
+
+    await AutomationEngine.trigger(
+      "DONOR_DELETED",
+      { id: item.id }
+    );
+
+}
     } else if (table === "students") {
-      if (action === "add") {
-        await StudentRepository.create(item);
-      } else if (action === "edit") {
-        await StudentRepository.update(item);
-      } else if (action === "delete") {
-        await StudentRepository.delete(item.id);
-      }
-    } else if (table === "volunteers") {
-      if (action === "add") {
-        await VolunteerRepository.create(item);
-      } else if (action === "edit") {
-        await VolunteerRepository.update(item);
-      } else if (action === "delete") {
-        await VolunteerRepository.delete(item.id);
-      }
+
+  if (action === "add") {
+
+    const student = await StudentRepository.create(item);
+
+    await AutomationEngine.trigger(
+      "STUDENT_CREATED",
+      student
+    );
+
+  } else if (action === "edit") {
+
+    await StudentRepository.update(item);
+
+    await AutomationEngine.trigger(
+      "STUDENT_UPDATED",
+      item
+    );
+
+  } else if (action === "delete") {
+
+    await StudentRepository.delete(item.id);
+
+    await AutomationEngine.trigger(
+      "STUDENT_DELETED",
+      { id: item.id }
+    );
+
+  }
+   } else if (table === "volunteers") {
+
+  if (action === "add") {
+
+    const volunteer = await VolunteerRepository.create(item);
+
+    await AutomationEngine.trigger(
+      "VOLUNTEER_CREATED",
+      volunteer
+    );
+
+  } else if (action === "edit") {
+
+    await VolunteerRepository.update(item);
+
+    await AutomationEngine.trigger(
+      "VOLUNTEER_UPDATED",
+      item
+    );
+
+  } else if (action === "delete") {
+
+    await VolunteerRepository.delete(item.id);
+
+    await AutomationEngine.trigger(
+      "VOLUNTEER_DELETED",
+      { id: item.id }
+    );
+
+  }
     } else {
       // Fallback for general tables
       const response = await fetch(`${API_BASE}/api/crm/update`, {
