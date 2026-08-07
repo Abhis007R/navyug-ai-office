@@ -14,7 +14,11 @@ import {
   Play
 } from "lucide-react";
 import { CrmDatabase, Task } from "../types";
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://navyug-ai-office.onrender.com";
 
+export default function CeoBriefing(...) {
 // Safe Simple Markdown Renderer (Inline)
 function renderSimpleMarkdown(text: string): React.ReactNode {
   if (!text) return null;
@@ -84,7 +88,7 @@ export default function CeoBriefing({ database, onUpdateDatabase, onTriggerAgent
     setErrorMsg("");
 
     try {
-      const response = await fetch("/api/agent/run", {
+      const response = await fetch(`${API_BASE}/api/agent/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

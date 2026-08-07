@@ -8,6 +8,11 @@ import {
   HelpCircle,
   Loader2
 } from "lucide-react";
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://navyug-ai-office.onrender.com";
+
+export default function ChatbotWidget(...) {
 
 interface Message {
   id: string;
@@ -63,7 +68,7 @@ export default function ChatbotWidget() {
     setErrorMsg("");
 
     try {
-      const response = await fetch("/api/agent/run", {
+      const response = await fetch(`${API_BASE}/api/agent/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

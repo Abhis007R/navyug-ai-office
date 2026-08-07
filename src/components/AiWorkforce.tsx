@@ -23,7 +23,11 @@ import {
 } from "lucide-react";
 import { AGENT_PROFILES, AgentProfile } from "../data/agents";
 import { CrmDatabase } from "../types";
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://navyug-ai-office.onrender.com";
 
+export default function AiWorkforce() {
 // Dynamic Lucide Icon Mapper
 const IconMapper: Record<string, React.ComponentType<any>> = {
   Search,
@@ -177,7 +181,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
       setBulkLog(prev => [...prev, `[${agent.name}] Launching directive: "${agent.exampleTasks?.[0] ?? ""}"`]);
       
       try {
-        const response = await fetch("/api/agent/run", {
+        const response = await fetch(`${API_BASE}/api/agent/run`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -355,7 +359,7 @@ export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceP
     setErrorMsg("");
 
     try {
-      const response = await fetch("/api/agent/run", {
+      const response = await fetch(`${API_BASE}/api/agent/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
