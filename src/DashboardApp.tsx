@@ -108,7 +108,7 @@ const handleUpdateDatabase = async (
       }
     } else if (table === "students") {
       if (action === "add") {
-        await StudentRepository.insert(item);
+        await StudentRepository.create(item);
       } else if (action === "edit") {
         await StudentRepository.update(item);
       } else if (action === "delete") {
@@ -116,7 +116,7 @@ const handleUpdateDatabase = async (
       }
     } else if (table === "volunteers") {
       if (action === "add") {
-        await VolunteerRepository.insert(item);
+        await VolunteerRepository.create(item);
       } else if (action === "edit") {
         await VolunteerRepository.update(item);
       } else if (action === "delete") {
