@@ -100,7 +100,7 @@ const handleUpdateDatabase = async (
   try {
     if (table === "donors") {
       if (action === "add") {
-        await DonorRepository.insert(item);
+        await DonorRepository.create(item);
       } else if (action === "edit") {
         await DonorRepository.update(item);
       } else if (action === "delete") {

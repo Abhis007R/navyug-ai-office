@@ -1,15 +1,17 @@
 import { Donor, Student, Volunteer } from "../types";
-
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://navyug-ai-office.onrender.com";
 export class DonorRepository {
   static async getAll(): Promise<Donor[]> {
-    const res = await fetch("/api/crm");
+    const res = await fetch(`${API_BASE}/api/crm`)
     if (!res.ok) throw new Error("Failed to fetch donors");
     const data = await res.json();
     return data.donors || [];
   }
 
   static async create(item: Omit<Donor, "id">): Promise<Donor> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "donors", action: "add", item }),
@@ -20,7 +22,7 @@ export class DonorRepository {
   }
 
   static async update(item: Donor): Promise<Donor> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "donors", action: "edit", item }),
@@ -31,7 +33,7 @@ export class DonorRepository {
   }
 
   static async delete(id: string): Promise<void> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "donors", action: "delete", item: { id } }),
@@ -42,14 +44,14 @@ export class DonorRepository {
 
 export class StudentRepository {
   static async getAll(): Promise<Student[]> {
-    const res = await fetch("/api/crm");
+    const res = await fetch(`${API_BASE}/api/crm`)
     if (!res.ok) throw new Error("Failed to fetch students");
     const data = await res.json();
     return data.students || [];
   }
 
   static async create(item: Omit<Student, "id">): Promise<Student> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "students", action: "add", item }),
@@ -60,7 +62,7 @@ export class StudentRepository {
   }
 
   static async update(item: Student): Promise<Student> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "students", action: "edit", item }),
@@ -71,7 +73,7 @@ export class StudentRepository {
   }
 
   static async delete(id: string): Promise<void> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "students", action: "delete", item: { id } }),
@@ -82,14 +84,14 @@ export class StudentRepository {
 
 export class VolunteerRepository {
   static async getAll(): Promise<Volunteer[]> {
-    const res = await fetch("/api/crm");
+    const res = await fetch(`${API_BASE}/api/crm`)
     if (!res.ok) throw new Error("Failed to fetch volunteers");
     const data = await res.json();
     return data.volunteers || [];
   }
 
   static async create(item: Omit<Volunteer, "id">): Promise<Volunteer> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "volunteers", action: "add", item }),
@@ -100,7 +102,7 @@ export class VolunteerRepository {
   }
 
   static async update(item: Volunteer): Promise<Volunteer> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "volunteers", action: "edit", item }),
@@ -111,7 +113,7 @@ export class VolunteerRepository {
   }
 
   static async delete(id: string): Promise<void> {
-    const res = await fetch("/api/crm/update", {
+    const res = await fetch(`${API_BASE}/api/crm/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ table: "volunteers", action: "delete", item: { id } }),
