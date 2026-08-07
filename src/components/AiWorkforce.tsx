@@ -27,7 +27,15 @@ const API_BASE =
   import.meta.env.VITE_API_URL ||
   "https://navyug-ai-office.onrender.com";
 
-export default function AiWorkforce() {
+interface AiWorkforceProps {
+  database: CrmDatabase;
+  onUpdateDatabase: (...args: any[]) => void;
+}
+
+export default function AiWorkforce({
+  database,
+  onUpdateDatabase,
+}: AiWorkforceProps) {
 // Dynamic Lucide Icon Mapper
 const IconMapper: Record<string, React.ComponentType<any>> = {
   Search,
@@ -112,31 +120,31 @@ function renderSimpleMarkdown(text: string): React.ReactNode {
 // Inline formatting of **bold** text and `code` tags
 function renderBoldPhrases(text: string): React.ReactNode {
   const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+
   return parts.map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={index} className="font-bold text-slate-900">
+        <strong key={index}>
           {part.slice(2, -2)}
         </strong>
       );
     }
+
     if (part.startsWith("`") && part.endsWith("`")) {
       return (
-        <code key={index} className="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono text-rose-600">
+        <code
+          key={index}
+          className="bg-slate-100 rounded px-1"
+        >
           {part.slice(1, -1)}
         </code>
       );
     }
-    return part;
+
+    return <React.Fragment key={index}>{part}</React.Fragment>;
   });
 }
 
-interface AiWorkforceProps {
-  database: CrmDatabase;
-  onUpdateDatabase: (table: string, action: string, item: any) => Promise<void>;
-}
-
-export default function AiWorkforce({ database, onUpdateDatabase }: AiWorkforceProps) {
   const [selectedAgent, setSelectedAgent] = useState<AgentProfile>(AGENT_PROFILES[0]);
   const [taskInput, setTaskInput] = useState<string>(selectedAgent?.exampleTasks?.[0] ?? "");
   const [isRunning, setIsRunning] = useState<boolean>(false);

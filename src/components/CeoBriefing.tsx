@@ -18,7 +18,7 @@ const API_BASE =
   import.meta.env.VITE_API_URL ||
   "https://navyug-ai-office.onrender.com";
 
-export default function CeoBriefing(...) {
+
 // Safe Simple Markdown Renderer (Inline)
 function renderSimpleMarkdown(text: string): React.ReactNode {
   if (!text) return null;

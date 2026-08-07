@@ -12,7 +12,6 @@ const API_BASE =
   import.meta.env.VITE_API_URL ||
   "https://navyug-ai-office.onrender.com";
 
-export default function ChatbotWidget(...) {
 
 interface Message {
   id: string;
