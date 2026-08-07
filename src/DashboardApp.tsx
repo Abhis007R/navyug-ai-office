@@ -91,53 +91,67 @@ export default function App() {
     checkGeminiKey();
   }, []);
 
-  // Modify Database records (insert, update, delete)
-  const handleUpdateDatabase = async (table: string, action: string, item: any) => {
-    try {
-      if (table === "donors") {
-        if (action === "add") {
-          await DonorRepository.create(item);
-        } else if (action === "edit") {
-          await DonorRepository.update(item);
-        } else if (action === "delete") {
-          await DonorRepository.delete(item.id);
-        }
-      } else if (table === "students") {
-        if (action === "add") {
-          await StudentRepository.create(item);
-        } else if (action === "edit") {
-          await StudentRepository.update(item);
-        } else if (action === "delete") {
-          await StudentRepository.delete(item.id);
-        }
-      } else if (table === "volunteers") {
-        if (action === "add") {
-          await VolunteerRepository.create(item);
-        } else if (action === "edit") {
-          await VolunteerRepository.update(item);
-        } else if (action === "delete") {
-          await VolunteerRepository.delete(item.id);
-        }
-      } else {
-        // Fallback for general tables
-        const response = await fetch(`${API_BASE}/api/crm/update`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ table, action, item }),
-        });
-        const resData = await response.json();
-        if (!resData.success) {
-          throw new Error(resData.error || "Failed to update record on server.");
-        }
+ // Modify Database records (insert, update, delete)
+const handleUpdateDatabase = async (
+  table: string,
+  action: string,
+  item: any
+) => {
+  try {
+    if (table === "donors") {
+      if (action === "add") {
+        await DonorRepository.insert(item);
+      } else if (action === "edit") {
+        await DonorRepository.update(item);
+      } else if (action === "delete") {
+        await DonorRepository.delete(item.id);
       }
+    } else if (table === "students") {
+      if (action === "add") {
+        await StudentRepository.insert(item);
+      } else if (action === "edit") {
+        await StudentRepository.update(item);
+      } else if (action === "delete") {
+        await StudentRepository.delete(item.id);
+      }
+    } else if (table === "volunteers") {
+      if (action === "add") {
+        await VolunteerRepository.insert(item);
+      } else if (action === "edit") {
+        await VolunteerRepository.update(item);
+      } else if (action === "delete") {
+        await VolunteerRepository.delete(item.id);
+      }
+    } else {
+      // Fallback for general tables
+      const response = await fetch(`${API_BASE}/api/crm/update`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          table,
+          action,
+          item,
+        }),
+      });
 
-      // Re-fetch database to get updated state across all widgets and views
-      await fetchCrmData();
-    } catch (e: any) {
-      console.error(e);
-      alert(e.message || "Error synchronizing with Express server.");
+      const resData = await response.json();
+
+      if (!resData.success) {
+        throw new Error(
+          resData.error || "Failed to update record on server."
+        );
+      }
     }
-  };
+
+    // Refresh database
+    await fetchCrmData();
+  } catch (e: any) {
+    console.error(e);
+    alert(e.message || "Error synchronizing with Express server.");
+  }
+};
 
   // Pipeline helper to delegate a task to an agent and jump to that workflow automatically
   const handleTriggerAgent = (agentId: string, task: string) => {
