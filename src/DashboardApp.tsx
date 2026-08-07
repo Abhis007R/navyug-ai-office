@@ -24,19 +24,40 @@ import ChatbotWidget from "./components/ChatbotWidget";
 import { AGENT_PROFILES } from "./data/agents";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>("dashboard");
-  const [database, setDatabase] = useState<CrmDatabase | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [keyMissingError, setKeyMissingError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const totalDonations =
+  (data.donations ?? []).reduce(
+    (sum, d) => sum + (d.amount || 0),
+    0
+  );
+
+const enrolledStudents =
+  (data.students ?? []).filter(
+    s => s.status === "Enrolled"
+  ).length;
+
+const activeVolunteers =
+  (data.volunteers ?? []).filter(
+    v => v.status === "Active"
+  ).length;
+
+const pendingTasks =
+  (data.taskList ?? []).filter(
+    t => t.status === "Pending"
+  ).length;
+
+const reviewCompliance =
+  (data.legalCompliance ?? []).filter(
+    c => c.status === "Review Required"
+  ).length;
 
   // Quick action states to pass to the AiWorkforce component when triggered from outside
   const [workforcePreselect, setWorkforcePreselect] = useState<{ agentId: string; task: string } | null>(null);
 
   // Fetch CRM database from Express server
   const API_BASE =
-  import.meta.env.VITE_API_URL ||
-  "https://navyug-ai-office.onrender.com";
+  import.meta.env.DEV
+    ? ""
+    : "https://your-backend.onrender.com";
   const fetchCrmData = async () => {
     try {
       const response = await fetch(`${API_BASE}/api/crm`);
@@ -233,13 +254,17 @@ export default function App() {
       Manual Approvals
     </span>
 
-    <span className="text-sm font-semibold text-rose-500">
-      {database
-        ?(database.communications?.filter((e) => e.status === "Drafted").length || 0) +
-    (database.tasks?.filter((t) => t.status === "Pending").length || 0)
-  : 0}{" "}
-      Pending
-    </span>
+   <span className="text-sm font-semibold text-rose-500">
+  {database
+    ? (database.communications ?? []).filter(
+        (e) => e.status === "Drafted"
+      ).length +
+      (database.tasks ?? []).filter(
+        (t) => t.status === "Pending"
+      ).length
+    : 0}{" "}
+  Pending
+</span>
   </div>
 
   <UserProfile />

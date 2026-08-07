@@ -151,7 +151,7 @@ async function fetchCrmDatabase() {
     students,
     tasks,
     userProfiles,
-    volunteers
+    volunteers,
   ] = await Promise.all([
     safeSelect("activitylogs"),
     safeSelect("bank_accounts"),
@@ -168,10 +168,11 @@ async function fetchCrmDatabase() {
     safeSelect("students"),
     safeSelect("tasks"),
     safeSelect("user_profiles"),
-    safeSelect("volunteers")
+    safeSelect("volunteers"),
   ]);
 
   return {
+    // Original fields
     activityLogs,
     bankAccounts,
     communications,
@@ -187,7 +188,16 @@ async function fetchCrmDatabase() {
     students,
     tasks,
     userProfiles,
-    volunteers
+    volunteers,
+
+    // Frontend compatibility fields
+    emails: communications,
+    donations: donorLeads,
+    finances: bankAccounts,
+    taskList: tasks,
+    legalCompliance: complianceStatus,
+    driveFiles: organizationDocuments,
+    websiteQueries: notifications,
   };
 }
 
