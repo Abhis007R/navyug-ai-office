@@ -24,64 +24,46 @@ import ChatbotWidget from "./components/ChatbotWidget";
 import { AGENT_PROFILES } from "./data/agents";
 
 export default function App() {
-  const totalDonations =
-  (data.donations ?? []).reduce(
-    (sum, d) => sum + (d.amount || 0),
-    0
-  );
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [database, setDatabase] = useState<CrmDatabase | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [keyMissingError, setKeyMissingError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-const enrolledStudents =
-  (data.students ?? []).filter(
-    s => s.status === "Enrolled"
-  ).length;
+  const [workforcePreselect, setWorkforcePreselect] = useState<{
+    agentId: string;
+    task: string;
+  } | null>(null);
 
-const activeVolunteers =
-  (data.volunteers ?? []).filter(
-    v => v.status === "Active"
-  ).length;
-
-const pendingTasks =
-  (data.taskList ?? []).filter(
-    t => t.status === "Pending"
-  ).length;
-
-const reviewCompliance =
-  (data.legalCompliance ?? []).filter(
-    c => c.status === "Review Required"
-  ).length;
-
-  // Quick action states to pass to the AiWorkforce component when triggered from outside
-  const [workforcePreselect, setWorkforcePreselect] = useState<{ agentId: string; task: string } | null>(null);
-
-  // Fetch CRM database from Express server
   const API_BASE =
-  import.meta.env.DEV
-    ? ""
-    : "https://your-backend.onrender.com";
+    import.meta.env.DEV
+      ? ""
+      : "https://navyug-ai-office.onrender.com";
+
   const fetchCrmData = async () => {
-  try {
-    console.log("API_BASE =", API_BASE);
+    try {
+      console.log("API_BASE =", API_BASE);
 
-    const response = await fetch(`${API_BASE}/api/crm`);
+      const response = await fetch(`${API_BASE}/api/crm`);
 
-    console.log("Status =", response.status);
+      console.log("Status =", response.status);
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+
+      setDatabase(data);
+    } catch (err) {
+      console.error(err);
+      setErrorMessage(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(false);
     }
-
-    const data = await response.json();
-    console.log(data);
-
-    setDatabase(data);
-  } catch (err) {
-    console.error(err);
-    setErrorMessage(err instanceof Error ? err.message : "Unknown error");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
   // Check if Gemini API key is configured
   const checkGeminiKey = async () => {
     try {

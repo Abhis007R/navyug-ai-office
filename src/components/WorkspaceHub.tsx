@@ -2371,4 +2371,3 @@ Save Changes
 </div>
   );
 }
-export default WorkspaceHub;
