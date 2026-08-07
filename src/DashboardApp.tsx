@@ -59,20 +59,28 @@ const reviewCompliance =
     ? ""
     : "https://your-backend.onrender.com";
   const fetchCrmData = async () => {
-    try {
-      const response = await fetch(`${API_BASE}/api/crm`);
-      if (!response.ok) {
-        throw new Error("Failed to contact the backend server.");
-      }
-      const data = await response.json();
-      setDatabase(data);
-    } catch (err: any) {
-      console.error(err);
-      setErrorMessage("Could not connect to full-stack Express backend. Ensure you ran the restart dev server tool.");
-    } finally {
-      setLoading(false);
+  try {
+    console.log("API_BASE =", API_BASE);
+
+    const response = await fetch(`${API_BASE}/api/crm`);
+
+    console.log("Status =", response.status);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
     }
-  };
+
+    const data = await response.json();
+    console.log(data);
+
+    setDatabase(data);
+  } catch (err) {
+    console.error(err);
+    setErrorMessage(err instanceof Error ? err.message : "Unknown error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Check if Gemini API key is configured
   const checkGeminiKey = async () => {
