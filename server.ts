@@ -1,10 +1,13 @@
+import "dotenv/config";
+
 import express from "express";
 import cors from "cors";
 import path from "path";
 import { createServer as createViteServer } from "vite";
+import { GoogleGenAI } from "@google/genai";
+
 import dotenv from "dotenv";
 import { supabase } from "./src/backend/supabase";
-import { gemini } from "./src/backend/lib/gemini";
 dotenv.config();
 
 const app = express();
@@ -17,7 +20,6 @@ app.use(
   })
 );
 
-app.use(express.json());
 app.use(express.json());
 
 const PORT = Number(process.env.PORT) || 4000;

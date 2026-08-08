@@ -121,3 +121,72 @@ export class VolunteerRepository {
     if (!res.ok) throw new Error("Failed to delete volunteer");
   }
 }
+import { Notification } from "../notifications";
+
+// ========================================
+// Notification Repository
+// ========================================
+
+export class NotificationRepository {
+
+  static async getAll(): Promise<Notification[]> {
+
+    const res = await fetch("/api/notifications");
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch notifications");
+    }
+
+    return await res.json();
+
+  }
+
+  static async create(notification: Notification): Promise<void> {
+
+    const res = await fetch("/api/notifications", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(notification),
+
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to save notification");
+    }
+
+  }
+
+  static async markAsRead(id: string): Promise<void> {
+
+    const res = await fetch(`/api/notifications/${id}/read`, {
+
+      method: "PUT",
+
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update notification");
+    }
+
+  }
+
+  static async delete(id: string): Promise<void> {
+
+    const res = await fetch(`/api/notifications/${id}`, {
+
+      method: "DELETE",
+
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to delete notification");
+    }
+
+  }
+
+}
