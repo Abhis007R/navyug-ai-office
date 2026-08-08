@@ -1,5 +1,4 @@
 import "dotenv/config";
-
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -8,12 +7,21 @@ import { GoogleGenAI } from "@google/genai";
 import { supabase } from "./src/backend/supabase";
 
 const app = express();
+
 app.use(
   cors({
-    origin: [
-  "https://navyug-ai-office.netlify.app",
-]
+    origin: true,
     credentials: true,
+    methods: [
+      "GET",
+      "HEAD",
+      "PUT",
+      "PATCH",
+      "POST",
+      "DELETE",
+      "OPTIONS",
+    ],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
