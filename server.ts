@@ -26,41 +26,8 @@ app.use(
 );
 
 
-const app = express();
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-    methods: [
-      "GET",
-      "HEAD",
-      "PUT",
-      "PATCH",
-      "POST",
-      "DELETE",
-      "OPTIONS",
-    ],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-app.use(
-  express.json({
-    verify: (req: any, res, buf) => {
-      const rawBody = buf.toString("utf8");
-
-      if (rawBody.trim()) {
-        console.log("📥 JSON REQUEST:", {
-          method: req.method,
-          url: req.originalUrl,
-          contentType: req.headers["content-type"],
-          bodyStart: rawBody.substring(0, 300),
-        });
-      }
-    },
-  })
-);
+app.use(express.json());
 
 app.use((err: any, req: any, res: any, next: any) => {
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
@@ -73,13 +40,12 @@ app.use((err: any, req: any, res: any, next: any) => {
     return res.status(400).json({
       success: false,
       error: "Invalid JSON request body.",
+      message: "The client sent malformed JSON.",
     });
   }
 
   next(err);
 });
-
-const PORT = Number(process.env.PORT) || 4000;
 
   }
   if (!aiInstance) {
