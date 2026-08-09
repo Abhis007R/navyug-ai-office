@@ -419,13 +419,13 @@ app.post("/api/agent/run", async (req, res) => {
     }
 
     const response = await ai.models.generateContent({
-       model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        systemInstruction: systemInstruction,
-        temperature: 0.7,
-      },
-    });
+  model: "gemini-3.6-flash",
+  contents: prompt,
+  config: {
+    systemInstruction,
+    tools: [{ googleSearch: {} }],
+  },
+});
 
     res.json({
       success: true,
