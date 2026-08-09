@@ -25,9 +25,43 @@ app.use(
   })
 );
 
-app.use(express.json());
 
-// JSON parsing error handler
+const app = express();
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: [
+      "GET",
+      "HEAD",
+      "PUT",
+      "PATCH",
+      "POST",
+      "DELETE",
+      "OPTIONS",
+    ],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(
+  express.json({
+    verify: (req: any, res, buf) => {
+      const rawBody = buf.toString("utf8");
+
+      if (rawBody.trim()) {
+        console.log("📥 JSON REQUEST:", {
+          method: req.method,
+          url: req.originalUrl,
+          contentType: req.headers["content-type"],
+          bodyStart: rawBody.substring(0, 300),
+        });
+      }
+    },
+  })
+);
+
 app.use((err: any, req: any, res: any, next: any) => {
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
     console.error("❌ INVALID JSON REQUEST");
@@ -39,7 +73,6 @@ app.use((err: any, req: any, res: any, next: any) => {
     return res.status(400).json({
       success: false,
       error: "Invalid JSON request body.",
-      message: "The client sent malformed JSON.",
     });
   }
 
@@ -48,15 +81,6 @@ app.use((err: any, req: any, res: any, next: any) => {
 
 const PORT = Number(process.env.PORT) || 4000;
 
-// Lazy initialization of Gemini API Client
-let aiInstance: GoogleGenAI | null = null;
-
-function getGeminiClient(): GoogleGenAI {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.trim() === "") {
-    throw new Error(
-      "GEMINI_API_KEY is not configured. Please add your Gemini API key in the 'Settings > Secrets' panel of the AI Studio UI to enable live AI reasoning."
-    );
   }
   if (!aiInstance) {
     aiInstance = new GoogleGenAI({
