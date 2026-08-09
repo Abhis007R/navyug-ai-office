@@ -331,14 +331,6 @@ app.post("/api/agent/run", async (req, res) => {
     (activeCtx.driveFiles?.length || 0) +
     (activeCtx.taskList?.length || 0);
 
-  if (totalRecordsCount === 0) {
-    return res.json({
-      success: true,
-      text: "No data available.",
-      agentId,
-    });
-  }
-
   try {
     const ai = getGeminiClient();
 
