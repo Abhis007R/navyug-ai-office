@@ -27,6 +27,25 @@ app.use(
 
 app.use(express.json());
 
+// JSON parsing error handler
+app.use((err: any, req: any, res: any, next: any) => {
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    console.error("❌ INVALID JSON REQUEST");
+    console.error("URL:", req.originalUrl);
+    console.error("METHOD:", req.method);
+    console.error("CONTENT-TYPE:", req.headers["content-type"]);
+    console.error("ERROR:", err.message);
+
+    return res.status(400).json({
+      success: false,
+      error: "Invalid JSON request body.",
+      message: "The client sent malformed JSON.",
+    });
+  }
+
+  next(err);
+});
+
 const PORT = Number(process.env.PORT) || 4000;
 
 // Lazy initialization of Gemini API Client

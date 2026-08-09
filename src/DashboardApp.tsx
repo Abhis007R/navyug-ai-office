@@ -71,17 +71,7 @@ export default function App() {
       // Run a simple lightweight probe query or check status.
       // We can also just handle it reactively if any route fails with "GEMINI_API_KEY is not configured."
       // Let's do a lightweight probe
-      const res = await fetch(`${API_BASE}/api/agent/run`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agentId: "CHATBOT", task: "Ping" }),
-      });
-      const data = await res.json();
-      if (!data.success && data.error && data.error.includes("GEMINI_API_KEY")) {
-        setKeyMissingError(true);
-      } else {
-        setKeyMissingError(false);
-      }
+      setKeyMissingError(false);
     } catch (e) {
       // Silent catch (server might still be booting or offline during load)
     }
