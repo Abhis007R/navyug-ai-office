@@ -24,8 +24,11 @@ import {
 import { AGENT_PROFILES, AgentProfile } from "../data/agents";
 import { CrmDatabase } from "../types";
 const API_BASE =
-  import.meta.env.VITE_API_URL ||
-  "https://navyug-ai-office.onrender.com";
+  window.location.hostname === "localhost"
+    ? "http://localhost:4000"
+    : "https://navyug-ai-office.onrender.com";
+
+console.log("AIWorkforce API_BASE =", API_BASE);
 
 interface AiWorkforceProps {
   database: CrmDatabase;
@@ -764,7 +767,7 @@ function renderBoldPhrases(text: string): React.ReactNode {
               <span className="font-bold text-slate-400 block uppercase tracking-wider text-[10px]">
                 Delegate Office Directive
               </span>
-              <span className="text-slate-400 font-mono text-[9px] font-bold">Model: gemini-3.5-flash</span>
+              <span className="text-slate-400 font-mono text-[9px] font-bold">model: "gemini-3.6-flash"</span>
             </div>
             <div className="relative">
               <textarea

@@ -37,9 +37,11 @@ export default function App() {
   } | null>(null);
 
   const API_BASE =
-    import.meta.env.DEV
-      ? ""
-      : "https://navyug-ai-office.onrender.com";
+  window.location.hostname === "localhost"
+    ? "http://localhost:4000"
+    : "https://navyug-ai-office.onrender.com";
+
+console.log("API_BASE =", API_BASE);
 
   const fetchCrmData = async () => {
     try {
@@ -59,6 +61,7 @@ export default function App() {
 
       setDatabase(data);
     } catch (err) {
+
       console.error(err);
       setErrorMessage(err instanceof Error ? err.message : "Unknown error");
     } finally {
