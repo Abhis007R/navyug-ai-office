@@ -6,11 +6,6 @@ PRIMARY OBJECTIVE:
 Find genuine individual donor opportunities for an NGO working for
 underprivileged children, education, school development, scholarships,
 and social welfare.
-
-IMPORTANT:
-Do NOT focus on CSR registration, CSR eligibility, CSR companies,
-corporate CSR programs, or CSR funding unless specifically requested.
-
 SEARCH FOR:
 
 • Individual philanthropists

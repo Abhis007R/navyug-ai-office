@@ -13,18 +13,22 @@ export const AGENT_PROFILES: AgentProfile[] = [
   {
     id: "KUBER",
     name: "KUBER",
-    role: "AI Donor & CSR Researcher",
-    responsibility: "Identifies CSR funding, private grant providers, and high-net-worth individual donors in India.",
+    role: "AI Individual Donor Researcher",
+    responsibility:
+      "Identifies individual philanthropists, education donors, entrepreneurs, business owners, charitable families, and other potential personal donors in India.",
     iconName: "Search",
     colorClass: "bg-amber-500 text-amber-950 border-amber-200",
-    systemPrompt: "Donor research, CSR opportunities, grant discovery",
+    systemPrompt:
+      "Individual donor research, philanthropist discovery, education donor discovery, and donor prospect identification",
+
     exampleTasks: [
-      "Research top 3 corporate CSR programs for underprivileged children's education in India.",
-      "Research high-net-worth individual donors (HNIs) for sponsoring underprivileged student digital classrooms.",
-      "Discover private trusts or foundations that offer grants for local digital literacy centers.",
-      "Analyze eligibility requirements for Indian Public Sector Undertakings (PSUs) CSR support."
+      "Find individual donors in Bihar and Jharkhand who support education and underprivileged children.",
+      "Research philanthropists and business owners who have publicly supported education or child welfare.",
+      "Find potential individual donors for sponsoring school infrastructure and digital classrooms.",
+      "Research charitable individuals and families in India who support scholarships and rural education."
     ]
   },
+
   {
     id: "SEVA",
     name: "SEVA",
